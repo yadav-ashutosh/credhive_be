@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from models.company import CompanyDB
 from schemas.company import *
 from database import get_db
-import datetime
 
 router = APIRouter()
 
@@ -16,14 +15,13 @@ def update_company_(
 ):
     """
     Common function to update the company entry with new data.
-    This will update only the fields that are provided (non-None values).
     """
     for var, value in vars(company_data).items():
         if value is not None:
             setattr(existing_company, var, value)
 
 
-@router.post("/company", response_model=Company)
+@router.post("/", response_model=Company)
 async def add_company(company: CompanyCreate, db: AsyncSession = Depends(get_db)):
     # Check if company exists
     result = await db.execute(
@@ -45,7 +43,7 @@ async def add_company(company: CompanyCreate, db: AsyncSession = Depends(get_db)
     return new_company
 
 
-@router.put("/company", response_model=Company)
+@router.put("/", response_model=Company)
 async def update_company(company: CompanyUpdate, db: AsyncSession = Depends(get_db)):
     # Check if company exists by ID
     result = await db.execute(
@@ -58,7 +56,6 @@ async def update_company(company: CompanyUpdate, db: AsyncSession = Depends(get_
 
     # Use the common update function to update the company
     update_company_(existing_company, company, db)
-
     await db.commit()
     await db.refresh(existing_company)
     return existing_company

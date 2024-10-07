@@ -8,13 +8,15 @@ from routers.company import router as companies_router
 
 app = FastAPI()
 
-
 @app.on_event("startup")
 async def startup():
     # await recreate_db()
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-
 app.include_router(credits_router, prefix="/credits", tags=["credits"])
-app.include_router(companies_router, prefix="/companies", tags=["companies"])
+app.include_router(companies_router, prefix="/company", tags=["company"])
+
+@app.get("/")
+async def read_root():
+    return {"message": "Hello, World!"}

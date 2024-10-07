@@ -16,7 +16,7 @@ import datetime
 router = APIRouter()
 
 
-@router.get("/credits", response_model=list[Credit])
+@router.get("/", response_model=list[Credit])
 async def get_all_credits(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(CreditDB))
     all_credits = result.scalars().all()
@@ -24,7 +24,7 @@ async def get_all_credits(db: AsyncSession = Depends(get_db)):
     return all_credits
 
 
-@router.get("/credits/{id}", response_model=Credit)
+@router.get("/{id}", response_model=Credit)
 async def get_credit(id: int, db: AsyncSession = Depends(get_db)):
     try:
         result = await db.execute(select(CreditDB).where(CreditDB.company_id == id))
@@ -38,10 +38,9 @@ async def get_credit(id: int, db: AsyncSession = Depends(get_db)):
     return company_credit
 
 
-@router.post("/credits", response_model=Credit)
+@router.post("/", response_model=Credit)
 async def create_credit(credit_data: CreditCreate, company_id: int):
     # For simplicity, we will just return the received data as if it was stored
-    # Return a simulated credit response
     total_due_loans = sum(
         loan.loan_amount for loan in credit_data.loans if loan.loan_status == "DUE"
     )
@@ -49,22 +48,21 @@ async def create_credit(credit_data: CreditCreate, company_id: int):
         turnover.annual_turnover for turnover in credit_data.annual_turnover
     )
 
-    # Compute the credit value
     credit_value = total_turnover - total_due_loans
 
     # Construct a simulated Credit response object
     simulated_credit = Credit(
-        id=1,  # Simulate an ID (for example purposes)
+        id=1,
         credit_value=credit_value,
         company_id=company_id,
-        company_name=credit_data.company_name,  # Assuming you included this field in CreditCreate
-        last_updated_at=datetime.datetime.utcnow(),  # Current time for last updated
+        company_name=credit_data.company_name, 
+        last_updated_at=datetime.datetime.utcnow(), 
     )
 
     return simulated_credit
 
 
-@router.put("/credits/{id}", response_model=Credit)
+@router.put("/{id}", response_model=Credit)
 async def update_credit(
     id: int, credit_data: CreditCreate, db: AsyncSession = Depends(get_db)
 ):
@@ -140,7 +138,7 @@ async def update_credit(
         return new_credit
 
 
-@router.delete("/credits/{id}")
+@router.delete("/{id}")
 async def delete_credit(id: int, db: AsyncSession = Depends(get_db)):
 
     result = await db.execute(select(CompanyDB).where(CompanyDB.id == id))

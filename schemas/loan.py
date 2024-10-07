@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 import datetime
 
 
@@ -8,7 +8,7 @@ class LoanCreate(BaseModel):
     loan_bank_provider: str
     loan_status: str  # PAID, DUE, INITIATED
 
-    @validator("loan_status")
+    @field_validator("loan_status")
     def check_loan_status(cls, value):
         allowed_status = {"PAID", "DUE", "INITIATED"}
         if value not in allowed_status:
