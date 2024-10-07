@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, Float, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
 
+
 class AnnualTurnoverDB(Base):
     __tablename__ = "annual_turnovers"
 

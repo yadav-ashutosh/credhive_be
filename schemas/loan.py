@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, validator
 import datetime
 
+
 class LoanCreate(BaseModel):
     loan_amount: float = Field(..., gt=0)
     taken_on: datetime.date

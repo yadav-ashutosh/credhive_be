@@ -3,12 +3,14 @@ from typing import List
 from schemas.loan import *
 from schemas.annual_turnover import *
 
+
 class CreditCreate(BaseModel):
     loans: List[LoanCreate]
     annual_turnover: List[AnnualTurnoverCreate]
 
     class Config:
         orm_mode = True
+
 
 class Credit(BaseModel):
     id: int

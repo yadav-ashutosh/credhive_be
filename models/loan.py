@@ -3,10 +3,12 @@ from sqlalchemy.orm import relationship
 from database import Base
 from enum import Enum as PyEnum
 
+
 class LoanStatus(PyEnum):
     PAID = "PAID"
     DUE = "DUE"
     INITIATED = "INITIATED"
+
 
 class LoanDB(Base):
     __tablename__ = "loans"

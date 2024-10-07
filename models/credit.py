@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 import datetime
 from database import Base
 
+
 class CreditDB(Base):
     __tablename__ = "credits"
 

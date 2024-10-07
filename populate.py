@@ -8,6 +8,7 @@ import asyncio
 # Create a Faker instance
 fake = Faker()
 
+
 # Generate fake company data
 def generate_company_data():
     return {
@@ -21,6 +22,7 @@ def generate_company_data():
         "company_website": fake.domain_name(),
     }
 
+
 # Generate fake loan data
 def generate_loan_data():
     return {
@@ -30,6 +32,7 @@ def generate_loan_data():
         "loan_status": fake.random_element(elements=("PAID", "DUE", "INITIATED")),
     }
 
+
 # Generate fake annual turnover data
 def generate_annual_turnover_data():
     return {
@@ -38,6 +41,7 @@ def generate_annual_turnover_data():
         "fiscal_year": f"{fake.year()}-{int(fake.year()) + 1}",
         "reported_by_company_date": fake.date_this_year(),
     }
+
 
 # Populate the database with dummy data
 async def populate_db(session: AsyncSession, num_companies: int = 10):
@@ -64,15 +68,18 @@ async def populate_db(session: AsyncSession, num_companies: int = 10):
     await session.commit()
     print(f"Successfully populated {num_companies} companies with loans and turnovers.")
 
+
 # Main function to run the population
 async def main():
     async with engine.begin() as conn:
         # Create a new session for database interaction
         async_session = sessionmaker(bind=conn, class_=AsyncSession)
         async with async_session() as session:
-            await populate_db(session, num_companies=10)  # You can change the number of companies here
+            await populate_db(
+                session, num_companies=10
+            )  # You can change the number of companies here
+
 
 # If running the file directly, execute the population process
 if __name__ == "__main__":
     asyncio.run(main())
-

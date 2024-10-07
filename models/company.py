@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import relationship
 from database import Base
 
+
 class CompanyDB(Base):
     __tablename__ = "companies"
 

@@ -10,7 +10,10 @@ import datetime
 
 router = APIRouter()
 
-def update_company_(existing_company: CompanyDB, company_data: BaseModel, db: AsyncSession):
+
+def update_company_(
+    existing_company: CompanyDB, company_data: BaseModel, db: AsyncSession
+):
     """
     Common function to update the company entry with new data.
     This will update only the fields that are provided (non-None values).
@@ -19,10 +22,13 @@ def update_company_(existing_company: CompanyDB, company_data: BaseModel, db: As
         if value is not None:
             setattr(existing_company, var, value)
 
+
 @router.post("/company", response_model=Company)
 async def add_company(company: CompanyCreate, db: AsyncSession = Depends(get_db)):
     # Check if company exists
-    result = await db.execute(select(CompanyDB).where(CompanyDB.company_id == company.company_id))
+    result = await db.execute(
+        select(CompanyDB).where(CompanyDB.company_id == company.company_id)
+    )
     existing_company = result.scalar_one_or_none()
 
     if existing_company:
@@ -42,7 +48,9 @@ async def add_company(company: CompanyCreate, db: AsyncSession = Depends(get_db)
 @router.put("/company", response_model=Company)
 async def update_company(company: CompanyUpdate, db: AsyncSession = Depends(get_db)):
     # Check if company exists by ID
-    result = await db.execute(select(CompanyDB).where(CompanyDB.company_id == company.company_id))
+    result = await db.execute(
+        select(CompanyDB).where(CompanyDB.company_id == company.company_id)
+    )
     existing_company = result.scalar_one_or_none()
 
     if not existing_company:

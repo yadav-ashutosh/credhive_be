@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, validator
 import datetime
 
+
 class AnnualTurnoverCreate(BaseModel):
     annual_turnover: float = Field(..., ge=0)
     profit: float = Field(..., ge=0)

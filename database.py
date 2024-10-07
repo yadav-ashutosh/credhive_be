@@ -21,25 +21,33 @@ if not DATABASE_URL:
 engine = create_async_engine(DATABASE_URL, echo=True)
 
 # Create a sessionmaker bound to the async engine
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession)
+SessionLocal = sessionmaker(
+    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
+)
+
 
 # Function to drop all tables and recreate them
 async def recreate_db():
     """Drop all tables and recreate them."""
     # Import models here to ensure they are registered before metadata is created
-    from models import CompanyDB, LoanDB, CreditDB, AnnualTurnoverDB  # Import all your models
+    from models import (
+        CompanyDB,
+        LoanDB,
+        CreditDB,
+        AnnualTurnoverDB,
+    )  # Import all your models
 
     async with engine.begin() as conn:
         # Drop all tables
         print("Dropping all tables...")
         await conn.run_sync(Base.metadata.drop_all)
-        
+
         # Recreate all tables
         print("Creating all tables...")
         await conn.run_sync(Base.metadata.create_all)
+
 
 # Dependency to get database session in FastAPI
 async def get_db():
     async with SessionLocal() as session:
         yield session
-
