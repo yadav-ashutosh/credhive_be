@@ -14,6 +14,8 @@ Below are the requirements before running the application
 
 1.) Do a ```pip install -r requirements.txt ``` 
 
+2.) Modify the postgres database url in the ```.env``` file with your username and credentials and the name of the database
+
 2.) run 
 ```uvicorn main:app --reload```
 
