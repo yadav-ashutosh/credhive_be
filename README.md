@@ -16,10 +16,10 @@ Below are the requirements before running the application
 
 2.) Modify the postgres database url in the ```.env``` file with your username and credentials and the name of the database
 
-2.) run 
+3.) run 
 ```uvicorn main:app --reload```
 
-3.) go to http://127.0.0.1:8000/docs to access docs and test api 
+4.) go to http://127.0.0.1:8000/docs to access docs and test api 
 
 ## 3.) Populating data and testing 
 
