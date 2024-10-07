@@ -66,14 +66,12 @@ async def create_credit(credit_data: CreditCreate, company_id: int):
 async def update_credit(
     id: int, credit_data: CreditCreate, db: AsyncSession = Depends(get_db)
 ):
-    # Fetch the company for which we are updating credit
     result = await db.execute(select(CompanyDB).where(CompanyDB.id == id))
     company = result.scalar_one_or_none()
 
     if not company:
         raise HTTPException(status_code=404, detail="Company not found")
 
-    # Delete old records for loans and turnovers
     await db.execute(delete(LoanDB).where(LoanDB.company_id == company.id))
     await db.execute(
         delete(AnnualTurnoverDB).where(AnnualTurnoverDB.company_id == company.id)
@@ -130,7 +128,7 @@ async def update_credit(
         new_credit = CreditDB(
             credit_value=credit_value,
             company_id=company.id,
-            company_name=company.name,  # Assuming the company name is stored here
+            company_name=company.name, 
         )
         db.add(new_credit)
         await db.commit()
